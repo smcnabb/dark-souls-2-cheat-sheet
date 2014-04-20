@@ -29,7 +29,7 @@
         $('input[type="checkbox"]').click(function() {
             var id = $(this).attr('id');
             var isChecked = profiles.ds2_profiles[profiles.current].checklistData[id] = $(this).prop('checked');
-            _gaq.push(['_trackEvent', 'Checkbox', (isChecked ? 'Check' : 'Uncheck'), id]);
+            //_gaq.push(['_trackEvent', 'Checkbox', (isChecked ? 'Check' : 'Uncheck'), id]);
             $(this).parent().parent().find('li > label > input[type="checkbox"]').each(function() {
                 var id = $(this).attr('id');
                 profiles.ds2_profiles[profiles.current].checklistData[id] = isChecked;
@@ -42,7 +42,7 @@
             profiles.current = $(this).val();
             $.jStorage.set('ds2_profiles', profiles);
             populateChecklists();
-            _gaq.push(['_trackEvent', 'Profile', 'Change', profiles.current]);
+            //_gaq.push(['_trackEvent', 'Profile', 'Change', profiles.current]);
         });
 
         $('#profileAdd').click(function() {
@@ -52,7 +52,7 @@
             $('#profileModalUpdate').hide();
             $('#profileModalDelete').hide();
             $('#profileModal').modal('show');
-            _gaq.push(['_trackEvent', 'Profile', 'Add']);
+            //_gaq.push(['_trackEvent', 'Profile', 'Add']);
         });
 
         $('#profileEdit').click(function() {
@@ -66,7 +66,7 @@
                 $('#profileModalDelete').hide();
             }
             $('#profileModal').modal('show');
-            _gaq.push(['_trackEvent', 'Profile', 'Edit', profiles.current]);
+            //_gaq.push(['_trackEvent', 'Profile', 'Edit', profiles.current]);
         });
 
         $('#profileModalAdd').click(function(event) {
@@ -82,7 +82,7 @@
                 populateChecklists();
             }
             $('#profileModal').modal('hide');
-            _gaq.push(['_trackEvent', 'Profile', 'Create', profile]);
+            //_gaq.push(['_trackEvent', 'Profile', 'Create', profile]);
         });
 
         $('#profileModalUpdate').click(function(event) {
@@ -96,7 +96,7 @@
                 populateProfiles();
             }
             $('#profileModal').modal('hide');
-            _gaq.push(['_trackEvent', 'Profile', 'Update', profile]);
+            //_gaq.push(['_trackEvent', 'Profile', 'Update', profile]);
         });
 
         $('#profileModalDelete').click(function(event) {
@@ -113,13 +113,13 @@
             populateProfiles();
             populateChecklists();
             $('#profileModal').modal('hide');
-            _gaq.push(['_trackEvent', 'Profile', 'Delete']);
+            //_gaq.push(['_trackEvent', 'Profile', 'Delete']);
         });
 
         $('#profileModalClose').click(function(event) {
             event.preventDefault();
             $('#profileModal').modal('hide');
-            _gaq.push(['_trackEvent', 'Profile', 'Close']);
+            //_gaq.push(['_trackEvent', 'Profile', 'Close']);
         });
 
     });
