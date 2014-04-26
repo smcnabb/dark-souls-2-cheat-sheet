@@ -36,6 +36,7 @@
                 $(this).prop('checked', isChecked);
             });
             $.jStorage.set('ds2_profiles', profiles);
+            calculateTotals();
         });
 
         $('#profiles').change(function(event) {
@@ -122,6 +123,8 @@
             //_gaq.push(['_trackEvent', 'Profile', 'Close']);
         });
 
+        calculateTotals();
+
     });
 
     function populateProfiles() {
@@ -137,10 +140,47 @@
         $.each(profiles.ds2_profiles[profiles.current].checklistData, function(index, value) {
             $('#' + index).prop('checked', value);
         });
+        calculateTotals();
+    }
+
+    function calculateTotals() {
+        var overallCount = 0, overallChecked = 0;
+        for (var i = 1; i <= 34; i++)  {
+            var totals = $('.totals_' + i);
+            if (totals.length == 0) {
+                continue;
+            }
+            var count = 0, checked = 0;
+            for (var j = 1; ; j++) {
+                var checkbox = $('#playthrough_' + i + '_' + j);
+                if (checkbox.length == 0) {
+                    break;
+                }
+                count++;
+                overallCount++;
+                if (checkbox.prop('checked')) {
+                    checked++;
+                    overallChecked++;
+                }
+            }
+            $(totals).each(function(index) {
+                this.innerHTML = '[' + checked + '/' + count + ']';
+                if (checked == count) {
+                    $(this).removeClass('in_progress').addClass('done');
+                } else {
+                    $(this).removeClass('done').addClass('in_progress');
+                }
+            });
+        }
+        $('#totals')[0].innerHTML = '[' + overallChecked + '/' + overallCount + ']';
+        if (overallChecked == overallCount) {
+            $('#totals').removeClass('in_progress').addClass('done');
+        } else {
+            $('#totals').removeClass('done').addClass('in_progress');
+        }
     }
 
     function addCheckbox(el) {
-        //console.log($(el).attr('data-id'));
         var lines = $(el).html().split('\n');
         lines[0] = '<label class="checkbox"><input type="checkbox" id="' + $(el).attr('data-id') + '">' + lines[0] + '</label>';
         $(el).html(lines.join('\n'));
