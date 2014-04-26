@@ -144,40 +144,41 @@
     }
 
     function calculateTotals() {
-        var overallCount = 0, overallChecked = 0;
-        for (var i = 1; i <= 34; i++)  {
-            var totals = $('.totals_' + i);
-            if (totals.length == 0) {
-                continue;
-            }
-            var count = 0, checked = 0;
-            for (var j = 1; ; j++) {
-                var checkbox = $('#playthrough_' + i + '_' + j);
-                if (checkbox.length == 0) {
-                    break;
+        $('[id$="_overall_total"]').each(function(index) {
+            var type = this.id.match(/(.*)_overall_total/)[1];
+            var overallCount = 0, overallChecked = 0;
+            $('[id^="' + type + '_totals_"]').each(function(index) {
+                var regex = new RegExp(type + '_totals_(.*)');
+                var i = parseInt(this.id.match(regex)[1]);
+                var count = 0, checked = 0;
+                for (var j = 1; ; j++) {
+                    var checkbox = $('#' + type + '_' + i + '_' + j);
+                    if (checkbox.length == 0) {
+                        break;
+                    }
+                    count++;
+                    overallCount++;
+                    if (checkbox.prop('checked')) {
+                        checked++;
+                        overallChecked++;
+                    }
                 }
-                count++;
-                overallCount++;
-                if (checkbox.prop('checked')) {
-                    checked++;
-                    overallChecked++;
-                }
-            }
-            $(totals).each(function(index) {
-                this.innerHTML = '[' + checked + '/' + count + ']';
+                this.innerHTML = $('#' + type + '_nav_totals_' + i)[0].innerHTML = '[' + checked + '/' + count + ']';
                 if (checked == count) {
                     $(this).removeClass('in_progress').addClass('done');
+                    $($('#' + type + '_nav_totals_' + i)[0]).removeClass('in_progress').addClass('done');
                 } else {
                     $(this).removeClass('done').addClass('in_progress');
+                    $($('#' + type + '_nav_totals_' + i)[0]).removeClass('done').addClass('in_progress');
                 }
             });
-        }
-        $('#totals')[0].innerHTML = '[' + overallChecked + '/' + overallCount + ']';
-        if (overallChecked == overallCount) {
-            $('#totals').removeClass('in_progress').addClass('done');
-        } else {
-            $('#totals').removeClass('done').addClass('in_progress');
-        }
+            this.innerHTML = '[' + overallChecked + '/' + overallCount + ']';
+            if (overallChecked == overallCount) {
+                $(this).removeClass('in_progress').addClass('done');
+            } else {
+                $(this).removeClass('done').addClass('in_progress');
+            }
+        });
     }
 
     function addCheckbox(el) {
