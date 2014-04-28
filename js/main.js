@@ -163,19 +163,21 @@
                         overallChecked++;
                     }
                 }
-                this.innerHTML = $('#' + type + '_nav_totals_' + i)[0].innerHTML = '[' + checked + '/' + count + ']';
                 if (checked == count) {
+                    this.innerHTML = $('#' + type + '_nav_totals_' + i)[0].innerHTML = '[DONE]';
                     $(this).removeClass('in_progress').addClass('done');
                     $($('#' + type + '_nav_totals_' + i)[0]).removeClass('in_progress').addClass('done');
                 } else {
+                    this.innerHTML = $('#' + type + '_nav_totals_' + i)[0].innerHTML = '[' + checked + '/' + count + ']';
                     $(this).removeClass('done').addClass('in_progress');
                     $($('#' + type + '_nav_totals_' + i)[0]).removeClass('done').addClass('in_progress');
                 }
             });
-            this.innerHTML = '[' + overallChecked + '/' + overallCount + ']';
             if (overallChecked == overallCount) {
+                this.innerHTML = '[DONE]';
                 $(this).removeClass('in_progress').addClass('done');
             } else {
+                this.innerHTML = '[' + overallChecked + '/' + overallCount + ']';
                 $(this).removeClass('done').addClass('in_progress');
             }
         });
