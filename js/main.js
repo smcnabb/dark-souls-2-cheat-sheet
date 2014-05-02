@@ -2,13 +2,13 @@
 
     var defaultProfiles = {
         'current': 'Default Profile',
-        'ds2_profiles': {
+        profilesKey: {
             'Default Profile': {
                 checklistData: {}
             }
         }
     };
-    var profiles = $.jStorage.get('ds2_profiles', defaultProfiles);
+    var profiles = $.jStorage.get(profilesKey, defaultProfiles);
 
     jQuery(document).ready(function($) {
 
@@ -28,20 +28,20 @@
 
         $('input[type="checkbox"]').click(function() {
             var id = $(this).attr('id');
-            var isChecked = profiles.ds2_profiles[profiles.current].checklistData[id] = $(this).prop('checked');
+            var isChecked = profiles[profilesKey][profiles.current].checklistData[id] = $(this).prop('checked');
             //_gaq.push(['_trackEvent', 'Checkbox', (isChecked ? 'Check' : 'Uncheck'), id]);
             $(this).parent().parent().find('li > label > input[type="checkbox"]').each(function() {
                 var id = $(this).attr('id');
-                profiles.ds2_profiles[profiles.current].checklistData[id] = isChecked;
+                profiles[profilesKey][profiles.current].checklistData[id] = isChecked;
                 $(this).prop('checked', isChecked);
             });
-            $.jStorage.set('ds2_profiles', profiles);
+            $.jStorage.set(profilesKey, profiles);
             calculateTotals();
         });
 
         $('#profiles').change(function(event) {
             profiles.current = $(this).val();
-            $.jStorage.set('ds2_profiles', profiles);
+            $.jStorage.set(profilesKey, profiles);
             populateChecklists();
             //_gaq.push(['_trackEvent', 'Profile', 'Change', profiles.current]);
         });
@@ -74,11 +74,11 @@
             event.preventDefault();
             var profile = $.trim($('#profileModalName').val());
             if (profile.length > 0) {
-                if (typeof profiles.ds2_profiles[profile] == 'undefined') {
-                    profiles.ds2_profiles[profile] = { checklistData: {} };
+                if (typeof profiles[profilesKey][profile] == 'undefined') {
+                    profiles[profilesKey][profile] = { checklistData: {} };
                 }
                 profiles.current = profile;
-                $.jStorage.set('ds2_profiles', profiles);
+                $.jStorage.set(profilesKey, profiles);
                 populateProfiles();
                 populateChecklists();
             }
@@ -90,10 +90,10 @@
             event.preventDefault();
             var newName = $.trim($('#profileModalName').val());
             if (newName.length > 0 && newName != profiles.current) {
-                profiles.ds2_profiles[newName] = profiles.ds2_profiles[profiles.current];
-                delete profiles.ds2_profiles[profiles.current];
+                profiles[profilesKey][newName] = profiles[profilesKey][profiles.current];
+                delete profiles[profilesKey][profiles.current];
                 profiles.current = newName;
-                $.jStorage.set('ds2_profiles', profiles);
+                $.jStorage.set(profilesKey, profiles);
                 populateProfiles();
             }
             $('#profileModal').modal('hide');
@@ -108,9 +108,9 @@
             if (!confirm('Are you sure?')) {
                 return;
             }
-            delete profiles.ds2_profiles[profiles.current];
+            delete profiles[profilesKey][profiles.current];
             profiles.current = getFirstProfile();
-            $.jStorage.set('ds2_profiles', profiles);
+            $.jStorage.set(profilesKey, profiles);
             populateProfiles();
             populateChecklists();
             $('#profileModal').modal('hide');
@@ -129,7 +129,7 @@
 
     function populateProfiles() {
         $('#profiles').empty();
-        $.each(profiles.ds2_profiles, function(index, value) {
+        $.each(profiles[profilesKey], function(index, value) {
             $('#profiles').append($("<option></option>").attr('value', index).text(index));
         });
         $('#profiles').val(profiles.current);
@@ -137,7 +137,7 @@
 
     function populateChecklists() {
         $('input[type="checkbox"]').prop('checked', false);
-        $.each(profiles.ds2_profiles[profiles.current].checklistData, function(index, value) {
+        $.each(profiles[profilesKey][profiles.current].checklistData, function(index, value) {
             $('#' + index).prop('checked', value);
         });
         calculateTotals();
@@ -187,21 +187,21 @@
         var lines = $(el).html().split('\n');
         lines[0] = '<label class="checkbox"><input type="checkbox" id="' + $(el).attr('data-id') + '">' + lines[0] + '</label>';
         $(el).html(lines.join('\n'));
-        if (profiles.ds2_profiles[profiles.current].checklistData[$(el).attr('data-id')] == true) {
+        if (profiles[profilesKey][profiles.current].checklistData[$(el).attr('data-id')] == true) {
             $('#' + $(el).attr('data-id')).prop('checked', true);
         }
     }
 
     function canDelete() {
         var count = 0;
-        $.each(profiles.ds2_profiles, function(index, value) {
+        $.each(profiles[profilesKey], function(index, value) {
             count++;
         });
         return (count > 1);
     }
 
     function getFirstProfile() {
-        for (var profile in profiles.ds2_profiles) {
+        for (var profile in profiles[profilesKey]) {
             return profile;
         }
     }
