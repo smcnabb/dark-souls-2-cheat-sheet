@@ -1,13 +1,13 @@
 (function($) {
 
     var defaultProfiles = {
-        'current': 'Default Profile',
-        profilesKey: {
-            'Default Profile': {
-                checklistData: {}
-            }
-        }
+        'current': 'Default Profile'
     };
+    defaultProfiles[profilesKey] = {
+        'Default Profile': {
+            checklistData: {}
+        }
+    }
     var profiles = $.jStorage.get(profilesKey, defaultProfiles);
 
     jQuery(document).ready(function($) {
