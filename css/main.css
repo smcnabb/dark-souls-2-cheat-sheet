@@ -4,6 +4,9 @@ th { text-align: left;}
 .in_progress { color: #CC6600; }
 .done { color: #009933; }
 
+ul {
+	list-style: none;
+}
 @media print {
     body { color: #000; }
     .navbar, #intro, input[type="checkbox"], .done, .in_progress { display: none; }
