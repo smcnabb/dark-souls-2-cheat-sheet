@@ -11,3 +11,7 @@ th { text-align: left;}
     .tab-content > .tab-pane, .pill-content > .pill-pane { display: block; }
     .tab-pane { page-break-after: always; }
 }
+
+body {
+    background-color: darkgray;
+}
