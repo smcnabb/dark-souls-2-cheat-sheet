@@ -11,3 +11,13 @@ th { text-align: left;}
     .tab-content > .tab-pane, .pill-content > .pill-pane { display: block; }
     .tab-pane { page-break-after: always; }
 }
+@media screen and (prefers-color-scheme: dark) {
+    body {
+        color: #f2f2f2;
+        background-color: #222222;
+    }
+    .navbar-inner {
+        background: #dfdfdf;
+        color: #2d2d2d;
+    }
+}
